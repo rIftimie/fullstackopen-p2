@@ -1,17 +1,27 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 function App() {
     const [persons, setPersons] = useState([
-        { name: "Arto Hellas", number: "123 - 234 - 232 - 232" },
+        { name: "Arto Hellas", number: "040-123456", id: 1 },
+        { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+        { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+        { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
     ]);
-    const [newName, setNewName] = useState("");
+    const [newName, setNewName] = useState(null);
     const [newNumber, setNewNumber] = useState(null);
+    const [filter, setFilter] = useState(null);
 
     function handleNewName(e) {
         setNewName(e.target.value);
     }
     function handleNewNumber(e) {
         setNewNumber(e.target.value);
+    }
+    function handleFilter(e) {
+        setFilter(e.target.value);
     }
 
     function addPerson(e) {
@@ -24,31 +34,27 @@ function App() {
         }
     }
 
-    const renderNames = persons.map((person) => (
-        <p key={person.name}>
-            {person.name} - {person.number}
-        </p>
-    ));
+    let filteredPersons = [...persons];
+
+    if (filter) {
+        const names = persons.map((person) => person.name);
+        filteredPersons = persons.filter((person) => {
+            if (person.name.toLowerCase().includes(filter.toLowerCase())) {
+                return person;
+            }
+        });
+    }
 
     return (
         <main>
             <h2>Phonebook</h2>
-            <form onSubmit={(e) => addPerson(e)}>
-                <label>
-                    name:
-                    <input onChange={(e) => handleNewName(e)} type="text" />
-                </label>
-                <br />
-                <label>
-                    number:
-                    <input onChange={(e) => handleNewNumber(e)} type="text" />
-                </label>
-                <label>
-                    <button type="submit">add</button>
-                </label>
-            </form>
-            <h2>Names</h2>
-            {renderNames}
+            <Filter handleFilter={handleFilter} />
+            <PersonForm
+                addPerson={addPerson}
+                handleNewName={handleNewName}
+                handleNewNumber={handleNewNumber}
+            />
+            <Persons persons={filteredPersons} />
         </main>
     );
 }
