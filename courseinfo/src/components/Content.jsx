@@ -1,13 +1,8 @@
 import Part from "./Part";
 
-function Content({ parts }) {
-    return (
-        <div>
-            <Part item={parts[0]} />
-            <Part item={parts[1]} />
-            <Part item={parts[2]} />
-        </div>
-    );
+function Content(props) {
+    const parts = props.parts.map((part) => <Part key={part.id} item={part} />);
+    return <>{parts}</>;
 }
 
 export default Content;
