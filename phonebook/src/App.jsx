@@ -10,7 +10,12 @@ function App() {
 
     function addPerson(e) {
         e.preventDefault();
-        setPersons(persons.concat({ name: newName }));
+        const names = persons.map((person) => person.name);
+        if (!names.includes(newName)) {
+            setPersons(persons.concat({ name: newName }));
+        } else {
+            window.alert(newName + " already exists");
+        }
     }
 
     const renderNames = persons.map((person) => (
