@@ -1,5 +1,8 @@
 async function getAll() {
     const response = await fetch("http://localhost:3001/persons");
+
+    if (!response.ok) throw new Error(response.statusText);
+
     const json = await response.json();
     return json;
 }
@@ -13,6 +16,9 @@ async function savePerson(person) {
         method: "POST",
         body: JSON.stringify(person),
     });
+
+    if (!response.ok) throw new Error(response.statusText);
+
     const json = await response.json();
     return json;
 }
@@ -26,6 +32,9 @@ async function updatePerson(person) {
         method: "PUT",
         body: JSON.stringify(person),
     });
+
+    if (!response.ok) throw new Error(response.statusText);
+
     const json = await response.json();
     return json;
 }
@@ -38,10 +47,4 @@ async function deleteById(id) {
     return json;
 }
 
-async function findOneById(id) {
-    const response = await fetch(`http://localhost:3001/persons/${id}`);
-    const json = await response.json();
-    return json;
-}
-
-export { getAll, savePerson, findOneById, deleteById, updatePerson };
+export { getAll, savePerson, deleteById, updatePerson };

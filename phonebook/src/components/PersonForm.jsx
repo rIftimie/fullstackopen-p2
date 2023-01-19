@@ -2,7 +2,7 @@ import React from "react";
 
 function PersonForm({ addPerson, handleNewName, handleNewNumber }) {
     return (
-        <div>
+        <section>
             <h2>Add New:</h2>
             <form onSubmit={(e) => addPerson(e)}>
                 <label>
@@ -18,7 +18,7 @@ function PersonForm({ addPerson, handleNewName, handleNewNumber }) {
                     <button type="submit">add</button>
                 </label>
             </form>
-        </div>
+        </section>
     );
 }
 

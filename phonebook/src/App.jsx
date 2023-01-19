@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import "./App.css";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import {
@@ -15,16 +17,14 @@ function App() {
     const [newName, setNewName] = useState(null);
     const [newNumber, setNewNumber] = useState(null);
     const [filter, setFilter] = useState(null);
+    const [notification, setNotification] = useState(null);
 
-    let filteredPersons = [...persons];
+    let personsToShow = [...persons];
 
     if (filter) {
-        const names = persons.map((person) => person.name);
-        filteredPersons = persons.filter((person) => {
-            if (person.name.toLowerCase().includes(filter.toLowerCase())) {
-                return person;
-            }
-        });
+        personsToShow = persons.filter((person) =>
+            person.name.toLowerCase().includes(filter.toLowerCase())
+        );
     }
 
     function handleNewName(e) {
@@ -42,6 +42,14 @@ function App() {
             setPersons(
                 persons.filter((person) => (person.id !== id ? person : null))
             );
+
+            const deletedPerson = persons.filter(
+                (person) => person.id === id
+            )[0];
+            setNotification(deletedPerson.name + " deleted");
+            setTimeout(() => {
+                setNotification(null);
+            }, 5000);
         }
     }
 
@@ -64,21 +72,41 @@ function App() {
                         )[0],
                         number: newNumber,
                     };
-                    await updatePerson(updatedPerson);
-                    setPersons(
-                        persons.map((person) => {
-                            if (person.name === newName) {
-                                person.number = newNumber;
-                            }
-                            return person;
-                        })
-                    );
+                    try {
+                        await updatePerson(updatedPerson);
+                        setPersons(
+                            persons.map((person) => {
+                                if (person.name === newName) {
+                                    person.number = newNumber;
+                                }
+                                return person;
+                            })
+                        );
+                        setNotification("Updated number for " + newName);
+                        setTimeout(() => {
+                            setNotification(null);
+                        }, 5000);
+                    } catch {
+                        setNotification(
+                            "Cannot update " +
+                                updatedPerson.name +
+                                ", person doesnt exist."
+                        );
+                        setTimeout(() => {
+                            setNotification(null);
+                        }, 5000);
+                    }
                 }
             } else {
                 await savePerson({ name: newName, number: newNumber });
                 setPersons(
                     persons.concat({ name: newName, number: newNumber })
                 );
+
+                setNotification("New person " + newName + " added");
+                setTimeout(() => {
+                    setNotification(null);
+                }, 5000);
             }
         } else {
             window.alert("Error. Input must not be empty");
@@ -95,6 +123,7 @@ function App() {
     return (
         <main>
             <h2>Phonebook</h2>
+            {notification && <Notification message={notification} />}
             <Filter handleFilter={handleFilter} />
             <PersonForm
                 addPerson={addPerson}
@@ -102,10 +131,7 @@ function App() {
                 handleNewNumber={handleNewNumber}
             />
             {persons && (
-                <Persons
-                    persons={filteredPersons}
-                    handleDelete={handleDelete}
-                />
+                <Persons persons={personsToShow} handleDelete={handleDelete} />
             )}
         </main>
     );

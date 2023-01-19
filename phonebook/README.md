@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# Exercise 2.11: The Phonebook Step6
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+We continue with developing the phonebook project:
 
-## Available Scripts
+-   `db/db.json` Database.
+-   `services/fetch.js` All the logic for fetching.
 
-In the project directory, you can run:
+> I've decided to not use Axios.
 
-### `npm start`
+# Exercise 2.12: The Phonebook Step7
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Added the logic for saving new persons to the phonebook with a function called `savePerson(person)`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Exercise 2.13: The Phonebook Step8
 
-### `npm test`
+Already created.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Exercise 2.14: Phonebook step9
 
-### `npm run build`
+To make it possible to delete entires I've created a `deleteById(id)` function.
+The function is called with a new **delete button** created on the Persons Component which gives the **person.id** as a parameter.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Exercise 2.15\*: Phonebook step10
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Added functionality for updating an entry if the name already exists in the database.
+The new number will replace the old one.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This is done with a function called `updatePerson(person)` which takes the updates entry and updates the old one in the database with a **PUT** method.
 
-### `npm run eject`
+To make this **SPA**, when updatePerson is called, the `personsToShow` variable updates the old entry with the new one making sure the order of the remaining entries are the same.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Exercise 2.16: Phonebook step11
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Added a `Notification` Component which is responsible for showing information about the opperations executed.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+It will use a `notification` State which will be null with conditional rendering when updated with a message to show.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Added manually a notification message for every operation, with a `setTimeout` which sets the notification `null` after 5s.
 
-## Learn More
+# Exercise 2.17\*: Phonebook step12
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This can be easily be fixed when fetching the data. We have to make sure to include a throw exception in the `fetch.js` functions if `response.ok` is false. The `updatePerson` function is now called in a **try-catch**.
