@@ -4,7 +4,7 @@ function Content({ countries: showCountries }) {
     let countryList = null;
     if (showCountries.length > 1 && showCountries.length < 10) {
         countryList = showCountries.map((country) => (
-            <li key={country.area}>{country.name.common}</li>
+            <Country simple country={country} />
         ));
     }
     return (
@@ -12,7 +12,7 @@ function Content({ countries: showCountries }) {
             {showCountries.length === 1 && (
                 <Country country={showCountries[0]} />
             )}
-            {countryList && <ul>{countryList}</ul>}
+            {countryList && countryList}
         </>
     );
 }
